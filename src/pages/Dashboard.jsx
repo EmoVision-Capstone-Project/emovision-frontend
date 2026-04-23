@@ -53,7 +53,7 @@ export default function Dashboard() {
             <div className="bg-white p-6 rounded-3xl shadow-lg flex flex-col items-center justify-center text-center">
               <h3 className="font-bold text-xl mb-4">Mood Today</h3>
               <div className="bg-[#81C784] h-20 w-20 rounded-full flex items-center justify-center text-white text-4xl mb-2 shadow-inner">
-                😑
+                😑 
               </div>
               <p className="font-bold text-lg text-gray-800">Neutral</p>
             </div>

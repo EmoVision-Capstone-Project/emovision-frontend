@@ -1,4 +1,4 @@
-import logoImg from "../assets/logo.png"; // Sesuaikan nama file
+import logoImg from "../assets/logo.png";
 
 export default function Logo({ className = "h-8" }) {
   return (
