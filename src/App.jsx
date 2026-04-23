@@ -5,6 +5,8 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile"; 
 import Affirmation from "./pages/Affirmation";
+import FaceMoodDetection from "./pages/FaceEmotionDetection";
+import Journaling from "./pages/Journaling";
 
 function App() {
   return (
@@ -16,6 +18,8 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/affirmation" element={<Affirmation />} /> 
+        <Route path="/face-mood" element={<FaceMoodDetection />} />
+        <Route path="/journaling" element={<Journaling />} />
       </Routes>
     </Router>
   );

@@ -1,11 +1,11 @@
 export default function Footer() {
   const teamMembers = [
-    { name: "Atika Adelia", email: "atika@email.com" }, // MINTA EMAIL DICODINGGGGGG!!!!!
-    { name: "Fadina Mustika R.", email: "fadina@email.com" },
-    { name: "Fadzilah Saputri", email: "fadzilah@email.com" },
-    { name: "Elfa Noviana Sari", email: "elfa@email.com" },
-    { name: "Hildyah Maretasya A.", email: "hildyah@email.com" },
-    { name: "Charista Septi D. A.", email: "charista@email.com" }
+    { name: "Atika Adelia", email: "cdcc119d6x2248@student.devacademy.id" }, // MINTA EMAIL DICODINGGGGGG!!!!!
+    { name: "Fadina Mustika R.", email: "cfcc119d6x2423@student.devacademy.id" },
+    { name: "Fadzilah Saputri", email: "cfcc119d6x2340@student.devacademy.id" },
+    { name: "Elfa Noviana Sari", email: "cacc119D6X2318@student.devacademy.id" },
+    { name: "Hildyah Maretasya A.", email: "cacc119d6x2214@student.devacademy.id" },
+    { name: "Charista Septi D. A.", email: "cdcc183d6x2720@student.devacademy.id" }
   ];
 
   return (
