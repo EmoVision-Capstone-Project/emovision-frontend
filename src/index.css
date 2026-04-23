@@ -1,1 +1,14 @@
 @import "tailwindcss";
+
+@theme {
+  --color-emo-primary: #AC87C5;
+  --color-emo-secondary: #E0AED0;
+  --color-emo-bg: #FFF8E9;
+  
+  --font-fredoka: "Fredoka", sans-serif;
+}
+
+body {
+  font-family: var(--font-fredoka);
+  background-color: var(--color-emo-bg);
+}

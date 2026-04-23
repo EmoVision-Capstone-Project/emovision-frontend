@@ -1,10 +1,17 @@
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import LandingPage from "./pages/LandingPage";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+
 function App() {
   return (
-    <div className="flex h-screen items-center justify-center bg-blue-100">
-      <h1 className="text-4xl font-bold text-blue-600 shadow-lg p-6 bg-white rounded-2xl">
-        Tailwind CSS EmoVision Ready!
-      </h1>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+      </Routes>
+    </Router>
   );
 }
 
