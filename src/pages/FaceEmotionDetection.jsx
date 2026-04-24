@@ -1,7 +1,7 @@
-import React from "react";
-import { FiCamera } from "react-icons/fi";
+import React, { useRef, useCallback } from "react";
 import Sidebar from "../components/Sidebar";
 import Footer from "../components/Footer";
+import Webcam from "react-webcam"; 
 
 const EmotionProgressBar = ({ label, percentage }) => (
   <div className="mb-4">
@@ -18,13 +18,23 @@ const EmotionProgressBar = ({ label, percentage }) => (
   </div>
 );
 
-export default function FaceMoodDetection() {
+export default function FaceEmotionDetection() {
+  const webcamRef = useRef(null);
+
+  const captureAndAnalyze = useCallback(() => {
+    if (!webcamRef.current) return;
+
+    const imageSrc = webcamRef.current.getScreenshot();
+    console.log("Gambar berhasil ditangkap!", imageSrc);
+    alert("Cek console, foto sudah ditangkap dan siap dikirim ke AI!");
+  }, [webcamRef]);
+
   return (
     <div className="flex h-screen bg-emo-bg font-fredoka overflow-hidden">
       <Sidebar />
 
       <div className="flex-1 overflow-y-auto">
-        <div className="p-10 max-w-6xl mx-auto min-h-screen flex flex-col">
+        <div className="p-10 max-w-6xl mx-auto min-h-screen">
           
           <div className="mb-10">
             <h1 className="text-5xl font-bold text-gray-900 mb-3">
@@ -38,27 +48,24 @@ export default function FaceMoodDetection() {
           <div className="flex flex-col lg:flex-row gap-10 items-start">
             
             <div className="flex-1 flex flex-col items-center w-full">
-              <div className="w-full h-[350px] bg-gray-400 rounded-[32px] relative overflow-hidden mb-6 flex items-center justify-center shadow-md">
-                
-                <img 
-                  src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                  alt="Camera Feed" 
+              
+              <div className="w-full h-[350px] bg-black rounded-[32px] relative overflow-hidden mb-6 shadow-md flex items-center justify-center">
+                <Webcam
+                  audio={false}
+                  ref={webcamRef}
+                  screenshotFormat="image/jpeg"
                   className="w-full h-full object-cover"
+                  mirrored={true} 
                 />
-                
-                <div className="absolute inset-0 bg-black/20 flex flex-col items-center justify-center">
-                  <div className="w-20 h-20 bg-black/30 backdrop-blur-sm rounded-full flex items-center justify-center mb-3 cursor-pointer hover:bg-black/40 transition">
-                    <FiCamera size={32} className="text-white" />
-                  </div>
-                  <p className="text-white font-medium text-lg drop-shadow-md">
-                    Activate your Camera
-                  </p>
-                </div>
               </div>
 
-              <button className="bg-[#AC87C5] hover:bg-[#9b75b3] text-white px-12 py-3.5 rounded-full font-bold text-lg transition-colors shadow-sm w-max">
+              <button 
+                onClick={captureAndAnalyze}
+                className="bg-[#AC87C5] hover:bg-[#9b75b3] text-white px-12 py-3.5 rounded-full font-bold text-lg transition-colors shadow-sm w-max"
+              >
                 Analyze Emotion
               </button>
+
             </div>
 
             <div className="w-full lg:w-[400px] bg-white p-8 rounded-[32px] shadow-lg flex-shrink-0">
@@ -86,10 +93,10 @@ export default function FaceMoodDetection() {
                 <EmotionProgressBar label="Neutral" percentage="22%" />
                 <EmotionProgressBar label="Depressed" percentage="12%" />
               </div>
+
             </div>
 
           </div>
-
         </div>
         <Footer />
       </div>
