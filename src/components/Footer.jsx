@@ -1,32 +1,66 @@
-export default function Footer() {
-  const teamMembers = [
-    { name: "Atika Adelia", email: "cdcc119d6x2248@student.devacademy.id" }, 
-    { name: "Fadina Mustika R.", email: "cfcc119d6x2423@student.devacademy.id" },
-    { name: "Fadzilah Saputri", email: "cfcc119d6x2340@student.devacademy.id" },
-    { name: "Elfa Noviana Sari", email: "cacc119D6X2318@student.devacademy.id" },
-    { name: "Hildyah Maretasya A.", email: "cacc119d6x2214@student.devacademy.id" },
-    { name: "Charista Septi D. A.", email: "cdcc183d6x2720@student.devacademy.id" }
-  ];
+import React from "react";
 
+export default function Footer() {
   return (
-    <footer className="bg-emo-secondary text-white py-12 px-10">
-      <div className="max-w-6xl mx-auto">
+    <footer className="bg-[#D8A7CA] py-6 px-5 md:px-10 text-white w-full flex-shrink-0 mt-auto">
+      <div className="max-w-4xl mx-auto flex flex-col items-center">
         
-        <h2 className="text-center text-2xl font-bold mb-10 tracking-widest uppercase">
+        <h3 className="font-bold text-xl mb-8 tracking-widest uppercase drop-shadow-sm">
           Contact Us
-        </h2>
+        </h3>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-8 gap-x-12 text-center mb-12">
-          {teamMembers.map((member, index) => (
-            <div key={index} className="flex flex-col">
-              <span className="text-sm font-medium opacity-80 mb-1">{member.name}</span>
-              <span className="text-sm font-medium opacity-100 mb-1">{member.email}</span>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-x-8 md:gap-x-16 gap-y-6 md:gap-y-4 mb-8 w-full text-center">
+          
+          <div className="flex flex-col items-center space-y-4 md:space-y-3">
+            <div className="flex flex-col items-center w-full">
+              <span className="text-xs opacity-80 mb-1">Atika Adelia</span>
+              <span className="text-sm font-semibold tracking-wide">
+                cdcc119d6x2248@student.devacademy.id
+              </span>
             </div>
-          ))}
+            <div className="flex flex-col items-center w-full">
+              <span className="text-xs opacity-80 mb-1">Hildyah Maretasya A.</span>
+              <span className="text-sm font-semibold tracking-wide">
+                cacc119d6x2214@student.devacademy.id
+              </span>
+            </div>
+          </div>
+
+          <div className="flex flex-col items-center space-y-4 md:space-y-3">
+            <div className="flex flex-col items-center w-full">
+              <span className="text-xs opacity-80 mb-1">Fadzilah Saputri</span>
+              <span className="text-sm font-semibold tracking-wide">
+                cfcc119d6x2340@student.devacademy.id
+              </span>
+            </div>
+            <div className="flex flex-col items-center w-full">
+              <span className="text-xs opacity-80 mb-1">Elfa Noviana Sari</span>
+              <span className="text-sm font-semibold tracking-wide">
+                cacc119D6X2318@student.devacademy.id
+              </span>
+            </div>
+          </div>
+
+          <div className="flex flex-col items-center space-y-4 md:space-y-3">
+            <div className="flex flex-col items-center w-full">
+              <span className="text-xs opacity-80 mb-1">Fadina Mustika R.</span>
+              <span className="text-sm font-semibold tracking-wide">
+                cfcc119d6x2423@student.devacademy.id
+              </span>
+            </div>
+            <div className="flex flex-col items-center w-full">
+              <span className="text-xs opacity-80 mb-1">Charista Septi D. A.</span>
+              <span className="text-sm font-semibold tracking-wide">
+                cdcc183d6x2720@student.devacademy.id
+              </span>
+            </div>
+          </div>
+
         </div>
 
-        <hr className="border-white/40 mb-6" />
-        <p className="text-center text-sm font-light tracking-wide">
+        <div className="w-full h-[1.5px] bg-white/40 mb-4 rounded-full"></div>
+        
+        <p className="text-sm font-bold tracking-wide drop-shadow-sm">
           © 2026 EmoVision. All rights reserved.
         </p>
         

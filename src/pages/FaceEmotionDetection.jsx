@@ -51,7 +51,7 @@ export default function FaceEmotionDetection() {
       <Sidebar />
 
       <div className="flex-1 overflow-y-auto">
-        <div className="p-10 max-w-6xl mx-auto min-h-screen">
+        <div className="p-5 pt-20 md:p-10 max-w-6xl mx-auto min-h-screen">
           
           <div className="mb-10">
             <h1 className="text-5xl font-bold text-gray-900 mb-3">Face Mood Detection</h1>

@@ -17,13 +17,28 @@ import quoteImg2 from "../assets/quote2.jpg";
 import quoteImg3 from "../assets/quote3.jpg";
 
 const moodLabelsY = {
-  7: 'Angry', 6: 'Happy', 5: 'Sad', 4: 'Disgust',
-  3: 'Fear', 2: 'Neutral', 1: 'Surprised'
+  7: 'Happy', 6: 'Surprised', 5: 'Neutral', 4: 'Sad',
+  3: 'Fear', 2: 'Disgust', 1: 'Angry'
 };
 
 const monthNames = [
   "January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December"
+];
+
+const quotesData = [
+  {
+    image: quoteImg1,
+    text: "You are your own little plant, water yourself, speak to yourself nicely and bloom."
+  },
+  {
+    image: quoteImg2,
+    text: "If it doesn't happen the way you wanted, it will happen in a better way daripada can imagine."
+  },
+  {
+    image: quoteImg3,
+    text: "Darkness cannot drive out darkness: only light can do that."
+  }
 ];
 
 export default function Dashboard() {
@@ -44,27 +59,26 @@ export default function Dashboard() {
     });
   };
 
-  const quotesData = [
-    { image: quoteImg1, text: "You are your own little plant, water yourself, speak to yourself nicely and bloom." },
-    { image: quoteImg2, text: "If it doesn't happen the way you wanted, it will happen in a better way than you can imagine." },
-    { image: quoteImg3, text: "Darkness cannot drive out darkness: only light can do that." }
-  ];
+  const currentMonthName = monthNames[currentDate.getMonth()];
+  const currentYear = currentDate.getFullYear();
 
-  const weeklyData = [
-    { name: 'Week 1', moodValue: 2 },
-    { name: 'Week 2', moodValue: 6 },
+  const weeklyChartData = [
+    { name: 'Week 1', moodValue: 7 },
+    { name: 'Week 2', moodValue: 5 },
     { name: 'Week 3', moodValue: 4 },
-    { name: 'Week 4', moodValue: 7 },
+    { name: 'Week 4', moodValue: 6 },
   ];
 
   return (
     <div className="flex h-screen bg-emo-bg font-fredoka overflow-hidden">
       <Sidebar />
-      <div className="flex-1 overflow-y-auto">
-        <div className="p-10 max-w-6xl mx-auto min-h-screen">
+
+      <div className="flex-1 h-screen overflow-y-auto flex flex-col relative">
+        <div className="p-5 pt-20 md:p-10 max-w-6xl mx-auto w-full flex-grow">
+          
           <div className="mb-8">
-            <h1 className="text-5xl font-bold text-gray-900 mb-2">Dashboard</h1>
-            <p className="text-3xl text-gray-800">Welcome, {username}!</p>
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-2">Dashboard</h1>
+            <p className="text-2xl md:text-3xl text-gray-800">Welcome, {username}!</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
@@ -82,73 +96,92 @@ export default function Dashboard() {
               <p className="font-bold text-lg text-gray-800">7 Days</p>
             </div>
 
-            <Link to="/journaling" className="bg-white p-6 rounded-3xl shadow-lg flex flex-col items-center justify-center text-center hover:scale-105 transition-all">
+            <Link to="/journaling" className="bg-white p-6 rounded-3xl shadow-lg flex flex-col items-center justify-center text-center hover:scale-105 transition-transform duration-300">
               <h3 className="font-bold text-xl mb-4 text-emo-primary">Gentle Reminder</h3>
               <p className="font-medium text-gray-700">Don't forget fill your journal today!!</p>
             </Link>
           </div>
 
-          <div className="bg-white p-10 rounded-[40px] shadow-lg mb-12">
-            <h2 className="text-center text-3xl font-bold mb-8">Graphic Mood</h2>
-            <div className="h-80 w-full mb-6">
+          <div className="bg-white p-6 md:p-10 rounded-[30px] md:rounded-[40px] shadow-lg mb-12 relative z-10">
+            <h2 className="text-center text-2xl md:text-3xl font-bold mb-8 text-gray-800">Graphic Mood</h2>
+            
+            <div className="w-full h-[300px] md:h-[400px] mb-8">
               <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={weeklyData} margin={{ bottom: 20, left: 10, right: 10 }}>
+                <AreaChart data={weeklyChartData} margin={{ top: 10, right: 30, left: -10, bottom: 0 }}>
+                  
                   <defs>
                     <linearGradient id="colorMood" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#FF69B4" stopOpacity={0.8}/>
-                      <stop offset="95%" stopColor="#FF69B4" stopOpacity={0}/>
+                      <stop offset="5%" stopColor="#AC87C5" stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor="#AC87C5" stopOpacity={0}/>
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#eee" />
+                  
+                  <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="#EEEEEE" />
                   
                   <XAxis 
                     dataKey="name" 
-                    axisLine={false} 
-                    tickLine={false} 
-                    tick={{fill: '#999', fontSize: 14}} 
-                    dy={15} 
+                    tick={{ fill: '#AC87C5', fontWeight: 'bold', fontSize: 12 }} 
+                    axisLine={{ stroke: '#AC87C5', strokeWidth: 2 }}
+                    tickLine={false}
+                    interval={0} 
+                    padding={{ left: 10, right: 10 }} 
                   />
                   
                   <YAxis 
                     domain={[1, 7]} 
                     ticks={[1, 2, 3, 4, 5, 6, 7]} 
                     tickFormatter={(tick) => moodLabelsY[tick]} 
-                    axisLine={false} 
-                    tickLine={false} 
-                    width={110}
-                    tick={{fill: '#333', fontSize: 14}}
-                    dx={-10} 
+                    tick={{ fill: '#374151', fontSize: 12, fontWeight: 600 }}
+                    axisLine={false}
+                    tickLine={false}
+                    width={70} 
                   />
-                  <Tooltip />
-                  <Area type="monotone" dataKey="moodValue" stroke="#FF69B4" strokeWidth={4} fillOpacity={1} fill="url(#colorMood)" />
+                  
+                  <Tooltip formatter={(value) => [moodLabelsY[value], "Mood"]} />
+                  
+                  <Area 
+                    type="linear" 
+                    dataKey="moodValue" 
+                    stroke="#AC87C5" 
+                    strokeWidth={4} 
+                    fillOpacity={1} 
+                    fill="url(#colorMood)" 
+                    dot={{ stroke: '#AC87C5', strokeWidth: 2, r: 4, fill: 'white' }}
+                  />
                 </AreaChart>
               </ResponsiveContainer>
             </div>
-            
-            <div className="flex items-center justify-center gap-6 border-t pt-8">
-              <button onClick={() => changeMonth(-1)}><FiChevronLeft size={30} className="text-emo-primary"/></button>
-              <span className="text-2xl font-bold text-emo-secondary uppercase tracking-widest">
-                {monthNames[currentDate.getMonth()]}
+
+            <div className="flex items-center justify-center gap-4 md:gap-8 border-t border-gray-100 pt-8 flex-wrap">
+              <button onClick={() => changeMonth(-1)} className="p-3 hover:bg-emo-bg rounded-full transition-colors group">
+                <FiChevronLeft size={28} className="text-emo-primary group-hover:scale-110 transition-transform" />
+              </button>
+              <span className="text-xl md:text-2xl font-bold text-gray-800 text-center uppercase tracking-widest min-w-[180px]">
+                {currentMonthName} {currentYear}
               </span>
-              <button onClick={() => changeMonth(1)}><FiChevronRight size={30} className="text-emo-primary"/></button>
+              <button onClick={() => changeMonth(1)} className="p-3 hover:bg-emo-bg rounded-full transition-colors group">
+                <FiChevronRight size={28} className="text-emo-primary group-hover:scale-110 transition-transform" />
+              </button>
             </div>
           </div>
 
           <div className="mb-12">
             <h2 className="text-3xl font-bold mb-2">Positive Quotes</h2>
-            <div className="flex flex-col gap-8 mt-8">
+            <p className="text-gray-600 mb-6 text-lg">A message designed to provide moral support</p>
+            <div className="flex flex-col gap-6">
               {quotesData.map((quote, index) => (
-                <div key={index} className="bg-white p-8 rounded-[35px] shadow-md flex flex-col md:flex-row items-center gap-10">
-                  <div className="w-full md:w-64 aspect-video flex-shrink-0 overflow-hidden rounded-[25px] shadow-sm">
-                    <img src={quote.image} className="w-full h-full object-cover" alt="Quote Illustration" />
+                <div key={index} className="bg-white p-6 rounded-3xl shadow-md flex flex-col md:flex-row items-center gap-8">
+                  <div className="w-full md:w-1/3 h-48 bg-gray-200 rounded-2xl overflow-hidden flex-shrink-0">
+                    <img src={quote.image} alt={`Quote ${index + 1}`} className="w-full h-full object-cover" />
                   </div>
-                  <p className="flex-1 text-xl italic text-gray-700 leading-relaxed">
+                  <p className="flex-1 font-medium text-lg text-gray-800 italic leading-relaxed">
                     "{quote.text}"
                   </p>
                 </div>
               ))}
             </div>
           </div>
+
         </div>
         <Footer />
       </div>

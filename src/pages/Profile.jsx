@@ -41,7 +41,7 @@ export default function Profile() {
       <Sidebar />
 
       <div className="flex-1 overflow-y-auto flex flex-col">
-        <div className="p-10 max-w-4xl mx-auto w-full flex-grow">
+        <div className="p-5 pt-20 md:p-10 max-w-4xl mx-auto w-full flex-grow">
           
           <h1 className="text-5xl font-bold text-gray-900 mb-10">Profile Setting</h1>
 
