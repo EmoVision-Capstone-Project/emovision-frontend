@@ -1,6 +1,6 @@
 export default function Footer() {
   const teamMembers = [
-    { name: "Atika Adelia", email: "cdcc119d6x2248@student.devacademy.id" }, // MINTA EMAIL DICODINGGGGGG!!!!!
+    { name: "Atika Adelia", email: "cdcc119d6x2248@student.devacademy.id" }, 
     { name: "Fadina Mustika R.", email: "cfcc119d6x2423@student.devacademy.id" },
     { name: "Fadzilah Saputri", email: "cfcc119d6x2340@student.devacademy.id" },
     { name: "Elfa Noviana Sari", email: "cacc119D6X2318@student.devacademy.id" },
@@ -20,7 +20,7 @@ export default function Footer() {
           {teamMembers.map((member, index) => (
             <div key={index} className="flex flex-col">
               <span className="text-sm font-medium opacity-80 mb-1">{member.name}</span>
-              <span className="font-bold text-lg">{member.email}</span>
+              <span className="text-sm font-medium opacity-100 mb-1">{member.email}</span>
             </div>
           ))}
         </div>

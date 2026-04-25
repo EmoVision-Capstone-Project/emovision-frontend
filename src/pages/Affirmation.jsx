@@ -37,18 +37,14 @@ export default function Affirmation() {
     setCurrentAffirmation("");
   };
 
-  // Fungsi untuk mengatur tinggi textarea secara otomatis saat mengetik
   const handleInput = (e) => {
     const element = e.target;
     setCurrentAffirmation(element.value);
     
-    // Reset tinggi dulu agar scrollHeight terbaca akurat
     element.style.height = "auto";
-    // Set tinggi sesuai dengan tinggi konten (Auto-resize)
     element.style.height = `${element.scrollHeight}px`;
   };
 
-  // Logika pengurutan: Mengurutkan dari tanggal terbaru ke terlama
   const sortedAffirmations = [...previousAffirmations].sort((a, b) => {
     return new Date(b.date) - new Date(a.date);
   });
@@ -60,7 +56,6 @@ export default function Affirmation() {
       <div className="flex-1 overflow-y-auto">
         <div className="p-10 max-w-6xl mx-auto min-h-screen">
           
-          {/* HEADER */}
           <div className="mb-10">
             <h1 className="text-5xl font-bold text-gray-900 mb-3">Affirmation</h1>
             <p className="text-3xl text-gray-800 leading-snug">
@@ -68,7 +63,6 @@ export default function Affirmation() {
             </p>
           </div>
 
-          {/* INPUT AREA DENGAN AUTO-RESIZE */}
           <div className="bg-white p-8 rounded-[40px] shadow-lg flex flex-col mb-12">
             <textarea
               className="w-full resize-none outline-none text-2xl text-gray-700 placeholder-gray-400 bg-transparent overflow-hidden min-h-[120px]"
@@ -87,11 +81,9 @@ export default function Affirmation() {
             </div>
           </div>
 
-          {/* PREVIOUS AFFIRMATIONS (MASONRY LAYOUT) */}
           <div className="mb-20">
             <h2 className="text-4xl font-bold text-gray-900 mb-8">Previous Affirmations</h2>
             
-            {/* Menggunakan columns-3 untuk efek Masonry (Google Keep Style) */}
             <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
               {sortedAffirmations.map((item, index) => (
                 <div 
