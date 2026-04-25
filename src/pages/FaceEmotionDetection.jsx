@@ -3,8 +3,6 @@ import Webcam from "react-webcam";
 import { FiCamera } from "react-icons/fi";
 import Sidebar from "../components/Sidebar";
 import Footer from "../components/Footer";
-
-// IMPORT ASET GAMBAR EMOSI
 import happyImg from "../assets/happy.png";
 import angryImg from "../assets/angry.png";
 import fearImg from "../assets/fear.png";
@@ -32,7 +30,6 @@ export default function FaceEmotionDetection() {
   const webcamRef = useRef(null);
   const [primaryEmotion, setPrimaryEmotion] = useState("Angry");
 
-  // Pemetaan mood ke gambar
   const moodImages = {
     Happy: happyImg,
     Angry: angryImg,
@@ -65,7 +62,6 @@ export default function FaceEmotionDetection() {
 
           <div className="flex flex-col lg:flex-row gap-10 items-start">
             
-            {/* AREA KAMERA */}
             <div className="flex-1 flex flex-col items-center w-full">
               <div className="w-full h-[400px] bg-black rounded-[32px] relative overflow-hidden mb-6 shadow-md">
                 <Webcam
@@ -73,7 +69,7 @@ export default function FaceEmotionDetection() {
                   ref={webcamRef}
                   screenshotFormat="image/jpeg"
                   className="w-full h-full object-cover"
-                  mirrored={true} // PERBAIKAN: Mirror dimatikan
+                  mirrored={true} 
                 />
               </div>
 
@@ -85,11 +81,9 @@ export default function FaceEmotionDetection() {
               </button>
             </div>
 
-            {/* AREA HASIL SCAN & RINGKASAN AI */}
             <div className="w-full lg:w-[450px] bg-white p-8 rounded-[32px] shadow-lg">
               
               <div className="flex items-center gap-4 mb-5">
-                {/* REVISI: Mengganti emoji dengan gambar aset */}
                 <div className="w-20 h-20 flex-shrink-0">
                   <img 
                     src={moodImages[primaryEmotion]} 
@@ -107,7 +101,6 @@ export default function FaceEmotionDetection() {
                 </div>
               </div>
 
-              {/* RINGKASAN AI (Kembali dimunculkan) */}
               <p className="text-[14px] text-gray-700 leading-relaxed mb-8 font-medium">
                 The webcam feature identifies “{primaryEmotion}” as the dominant emotion with a high degree of confidence, as indicated by forehead wrinkles or pursed lips during live detection.
               </p>

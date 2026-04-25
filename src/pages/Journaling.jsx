@@ -1,9 +1,7 @@
 import React, { useState } from "react";
-import { FiChevronDown, FiChevronUp, FiBookOpen } from "react-icons/fi"; // Menggunakan FiBookOpen sebagai pengganti ikon gambar
+import { FiChevronDown, FiChevronUp, FiBookOpen } from "react-icons/fi";
 import Sidebar from "../components/Sidebar";
 import Footer from "../components/Footer";
-
-// Import gambar emosi (Pastikan file ini ada di assets dan formatnya benar .png/.jpg)
 import angryImg from "../assets/angry.png";
 
 const pastJournalsData = [
@@ -46,7 +44,6 @@ export default function Journaling() {
             <p className="text-3xl text-gray-700">How are you feeling today?</p>
           </div>
 
-          {/* INPUT AREA */}
           <div className="bg-white p-8 rounded-[40px] shadow-lg flex flex-col mb-10 min-h-[300px]">
             <textarea
               className="w-full flex-1 resize-none outline-none text-xl text-gray-700 placeholder-gray-400 bg-transparent"
@@ -68,10 +65,8 @@ export default function Journaling() {
             </div>
           </div>
 
-          {/* MOOD TODAY & AI GENERATE */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
             <div className="bg-[#D8A7CA] p-8 rounded-[40px] shadow-lg flex flex-col items-center justify-center text-white">
-              {/* Perbaikan: Memastikan gambar muncul */}
               <div className="w-24 h-24 mb-6">
                 <img 
                   src={angryImg} 
@@ -94,7 +89,6 @@ export default function Journaling() {
             </div>
           </div>
 
-          {/* MY JOURNEY (DROPDOWN DENGAN REACT-ICONS) */}
           <div className="mb-20">
             <h2 className="text-4xl font-bold text-gray-900 mb-8">My Journey</h2>
             
@@ -106,7 +100,6 @@ export default function Journaling() {
                     className="bg-white p-6 rounded-[25px] shadow-md flex items-center justify-between hover:bg-gray-50 transition-all z-10"
                   >
                     <div className="flex items-center gap-6">
-                      {/* Menggunakan React Icon FiBookOpen */}
                       <div className="bg-[#AC87C5] p-4 rounded-2xl text-white">
                         <FiBookOpen size={28} />
                       </div>
@@ -118,7 +111,6 @@ export default function Journaling() {
                     }
                   </button>
 
-                  {/* Konten Dropdown */}
                   {openId === item.id && (
                     <div className="bg-[#FDF0F6] mx-4 p-8 rounded-b-[30px] shadow-inner -mt-4 pt-12 animate-fadeIn transition-all">
                       <p className="text-xl text-gray-800 leading-relaxed font-medium mb-6">
