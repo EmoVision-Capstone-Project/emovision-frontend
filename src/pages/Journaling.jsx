@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FiChevronDown, FiChevronUp, FiBookOpen } from "react-icons/fi";
-import axios from "axios"; // Tambahkan import axios
+import axios from "axios";
 import Sidebar from "../components/Sidebar";
 import Footer from "../components/Footer";
 import angryImg from "../assets/angry.png";
@@ -24,12 +24,10 @@ export default function Journaling() {
   const [currentJournal, setCurrentJournal] = useState("");
   const [openId, setOpenId] = useState(null);
   
-  // State baru untuk menangani loading dan pesan sukses/eror
   const [isLoading, setIsLoading] = useState(false);
   const [statusMessage, setStatusMessage] = useState({ text: "", type: "" });
 
   const handleSave = async () => {
-    // 1. Validasi: Jangan kirim kalau kosong
     if (!currentJournal.trim()) {
       setStatusMessage({ text: "Jurnal tidak boleh kosong!", type: "error" });
       setTimeout(() => setStatusMessage({ text: "", type: "" }), 3000);
@@ -39,29 +37,26 @@ export default function Journaling() {
     setIsLoading(true);
     setStatusMessage({ text: "", type: "" });
 
-    // 2. Siapkan data sesuai dengan ERD PostgreSQL kamu
     const journalData = {
-      user_id: "808caf48-99f0-4e83-9dd1-d76d1b590c16", // PENTING: Ganti dengan UUID dari tabel users kamu
+      user_id: "808caf48-99f0-4e83-9dd1-d76d1b590c16", 
       content: currentJournal,
-      mood_result: "Neutral", // Sementara di-hardcode menunggu AI Engineer
+      mood_result: "Neutral", 
       ai_accuracy_score: 0.85, 
       ai_feedback: "Fitur deteksi sedang diproses..." 
     };
 
     try {
-      // 3. Eksekusi Axios (POST ke server Express)
       const response = await axios.post("http://localhost:5000/api/journals", journalData);
       
       console.log("Berhasil disimpan di Database:", response.data);
       setStatusMessage({ text: "Yeay! Jurnal berhasil disimpan.", type: "success" });
-      setCurrentJournal(""); // Kosongkan form setelah berhasil
+      setCurrentJournal("");
       
     } catch (error) {
       console.error("Gagal menyimpan:", error);
       setStatusMessage({ text: "Gagal terhubung ke server.", type: "error" });
     } finally {
       setIsLoading(false);
-      // Hilangkan notifikasi setelah 3 detik
       setTimeout(() => setStatusMessage({ text: "", type: "" }), 3000);
     }
   };
@@ -89,13 +84,10 @@ export default function Journaling() {
               maxLength={200}
               value={currentJournal}
               onChange={(e) => setCurrentJournal(e.target.value)}
-              disabled={isLoading} // Form tidak bisa diketik saat proses simpan
+              disabled={isLoading}
             />
             
-            {/* Area Status & Tombol */}
-            <div className="flex flex-col sm:flex-row items-end sm:items-center justify-between gap-4 mt-4">
-              
-              {/* Notifikasi Pesan */}
+            <div className="flex flex-col sm:flex-row items-end sm:items-center justify-between gap-4 mt-4">              
               <div className="flex-1">
                 {statusMessage.text && (
                   <span className={`font-medium ${statusMessage.type === 'success' ? 'text-green-500' : 'text-red-500'}`}>
@@ -121,7 +113,6 @@ export default function Journaling() {
             </div>
           </div>
 
-          {/* === BAGIAN BAWAH (STATIS) TETAP SAMA === */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
             <div className="bg-[#D8A7CA] p-8 rounded-[40px] shadow-lg flex flex-col items-center justify-center text-white">
               <div className="w-24 h-24 mb-6">
