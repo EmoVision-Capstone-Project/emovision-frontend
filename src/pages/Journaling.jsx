@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { FiChevronDown, FiChevronUp, FiBookOpen } from "react-icons/fi";
+import axios from "axios"; // Tambahkan import axios
 import Sidebar from "../components/Sidebar";
 import Footer from "../components/Footer";
 import angryImg from "../assets/angry.png";
@@ -22,10 +23,47 @@ const pastJournalsData = [
 export default function Journaling() {
   const [currentJournal, setCurrentJournal] = useState("");
   const [openId, setOpenId] = useState(null);
+  
+  // State baru untuk menangani loading dan pesan sukses/eror
+  const [isLoading, setIsLoading] = useState(false);
+  const [statusMessage, setStatusMessage] = useState({ text: "", type: "" });
 
-  const handleSave = () => {
-    console.log("Jurnal disimpan:", currentJournal);
-    setCurrentJournal("");
+  const handleSave = async () => {
+    // 1. Validasi: Jangan kirim kalau kosong
+    if (!currentJournal.trim()) {
+      setStatusMessage({ text: "Jurnal tidak boleh kosong!", type: "error" });
+      setTimeout(() => setStatusMessage({ text: "", type: "" }), 3000);
+      return;
+    }
+
+    setIsLoading(true);
+    setStatusMessage({ text: "", type: "" });
+
+    // 2. Siapkan data sesuai dengan ERD PostgreSQL kamu
+    const journalData = {
+      user_id: "808caf48-99f0-4e83-9dd1-d76d1b590c16", // PENTING: Ganti dengan UUID dari tabel users kamu
+      content: currentJournal,
+      mood_result: "Neutral", // Sementara di-hardcode menunggu AI Engineer
+      ai_accuracy_score: 0.85, 
+      ai_feedback: "Fitur deteksi sedang diproses..." 
+    };
+
+    try {
+      // 3. Eksekusi Axios (POST ke server Express)
+      const response = await axios.post("http://localhost:5000/api/journals", journalData);
+      
+      console.log("Berhasil disimpan di Database:", response.data);
+      setStatusMessage({ text: "Yeay! Jurnal berhasil disimpan.", type: "success" });
+      setCurrentJournal(""); // Kosongkan form setelah berhasil
+      
+    } catch (error) {
+      console.error("Gagal menyimpan:", error);
+      setStatusMessage({ text: "Gagal terhubung ke server.", type: "error" });
+    } finally {
+      setIsLoading(false);
+      // Hilangkan notifikasi setelah 3 detik
+      setTimeout(() => setStatusMessage({ text: "", type: "" }), 3000);
+    }
   };
 
   const toggleDropdown = (id) => {
@@ -44,27 +82,46 @@ export default function Journaling() {
             <p className="text-3xl text-gray-700">How are you feeling today?</p>
           </div>
 
-          <div className="bg-white p-8 rounded-[40px] shadow-lg flex flex-col mb-10 min-h-[300px]">
+          <div className="bg-white p-8 rounded-[40px] shadow-lg flex flex-col mb-10 min-h-[300px] relative">
             <textarea
-              className="w-full flex-1 resize-none outline-none text-xl text-gray-700 placeholder-gray-400 bg-transparent"
+              className="w-full flex-1 resize-none outline-none text-xl text-gray-700 placeholder-gray-400 bg-transparent disabled:opacity-50"
               placeholder="Write Your Heart Out..."
               maxLength={200}
               value={currentJournal}
               onChange={(e) => setCurrentJournal(e.target.value)}
+              disabled={isLoading} // Form tidak bisa diketik saat proses simpan
             />
-            <div className="flex items-center justify-end gap-6 mt-4">
-              <span className="text-gray-400 font-medium text-lg">
-                {currentJournal.length}/200
-              </span>
-              <button 
-                onClick={handleSave}
-                className="bg-[#AC87C5] hover:bg-[#9b75b3] text-white px-10 py-3 rounded-full font-bold text-lg transition-all shadow-md"
-              >
-                Save Journal
-              </button>
+            
+            {/* Area Status & Tombol */}
+            <div className="flex flex-col sm:flex-row items-end sm:items-center justify-between gap-4 mt-4">
+              
+              {/* Notifikasi Pesan */}
+              <div className="flex-1">
+                {statusMessage.text && (
+                  <span className={`font-medium ${statusMessage.type === 'success' ? 'text-green-500' : 'text-red-500'}`}>
+                    {statusMessage.text}
+                  </span>
+                )}
+              </div>
+
+              <div className="flex items-center gap-6">
+                <span className="text-gray-400 font-medium text-lg">
+                  {currentJournal.length}/200
+                </span>
+                <button 
+                  onClick={handleSave}
+                  disabled={isLoading}
+                  className={`px-10 py-3 rounded-full font-bold text-lg transition-all shadow-md text-white ${
+                    isLoading ? "bg-gray-400 cursor-not-allowed" : "bg-[#AC87C5] hover:bg-[#9b75b3]"
+                  }`}
+                >
+                  {isLoading ? "Saving..." : "Save Journal"}
+                </button>
+              </div>
             </div>
           </div>
 
+          {/* === BAGIAN BAWAH (STATIS) TETAP SAMA === */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
             <div className="bg-[#D8A7CA] p-8 rounded-[40px] shadow-lg flex flex-col items-center justify-center text-white">
               <div className="w-24 h-24 mb-6">
