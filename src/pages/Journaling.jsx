@@ -228,12 +228,14 @@ export default function Journaling() {
             <h2 className="text-[64px] font-extrabold text-[#2F3640] leading-none tracking-tight mb-1">
               {newStreakCount}
             </h2>
-            <p className="text-xl font-bold text-[#4B5563] mb-6">hari beruntun</p>
+            <p className="text-xl font-bold text-[#4B5563] mb-6">
+              days in a row
+            </p>
             <p className="text-[15px] text-[#6B7280] mb-8 leading-relaxed px-2">
-              Maintain your daily journaling passion so you can learn more about yourself!
+              To discover more about yourself, keep up your daily journaling or affirmations practice!
             </p>
             <button onClick={() => setShowStreakModal(false)} className="bg-[#2D3748] hover:bg-[#1A202C] text-white w-full py-3.5 rounded-lg font-bold text-[15px] shadow-sm transition-colors">
-              Let's Journal Again
+              Continue writing journals
             </button>
           </div>
         </div>

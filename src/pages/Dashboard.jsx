@@ -122,7 +122,7 @@ export default function Dashboard() {
             <div className="bg-white p-6 rounded-3xl shadow-lg flex flex-col items-center justify-center text-center">
               <h3 className="font-bold text-xl mb-4">Streak</h3>
               <img src={streakIcon} alt="Streak" className="h-16 mb-2 object-contain" />
-]              <p className="font-bold text-lg text-gray-800">{userStreak} Days</p>
+                <p className="font-bold text-lg text-gray-800">{userStreak} Days</p>
             </div>
 
             <Link to="/journaling" className="bg-white p-6 rounded-3xl shadow-lg flex flex-col items-center justify-center text-center hover:scale-105 transition-transform duration-300">
