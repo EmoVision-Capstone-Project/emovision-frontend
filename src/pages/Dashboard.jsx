@@ -1,7 +1,8 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import axios from "axios";
 import Sidebar from "../components/Sidebar";
 import Footer from "../components/Footer";
 import streakIcon from "../assets/streak-icon.png";
@@ -42,14 +43,40 @@ const quotesData = [
 ];
 
 export default function Dashboard() {
-  const username = "Zila";
+  const navigate = useNavigate();
+  const [userData, setUserData] = useState(null); 
   const [currentMood, setCurrentMood] = useState("Happy");
   const [currentDate, setCurrentDate] = useState(new Date());
+  
+  // State untuk menyimpan streak
+  const [userStreak, setUserStreak] = useState(0);
 
   const moodImages = {
     Happy: happyImg, Angry: angryImg, Fear: fearImg,
     Disgust: disgustImg, Surprised: surprisedImg, Neutral: neutralImg, Sad: sadImg,
   };
+
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      const storedUser = localStorage.getItem("user");
+      if (storedUser) {
+        const parsedUser = JSON.parse(storedUser);
+        setUserData(parsedUser);
+        
+        try {
+          const response = await axios.get(`http://localhost:5000/api/journals/stats/${parsedUser.user_id}`);
+          setUserStreak(response.data.data.current_streak);
+        } catch (error) {
+          console.error("Failed to fetch streak data:", error);
+        }
+
+      } else {
+        navigate("/login"); 
+      }
+    };
+
+    fetchDashboardData();
+  }, [navigate]);
 
   const changeMonth = (direction) => {
     setCurrentDate(prevDate => {
@@ -69,6 +96,8 @@ export default function Dashboard() {
     { name: 'Week 4', moodValue: 6 },
   ];
 
+  const displayFirstName = userData?.full_name ? userData.full_name.split(' ')[0] : 'User';
+
   return (
     <div className="flex h-screen bg-emo-bg font-fredoka overflow-hidden">
       <Sidebar />
@@ -78,7 +107,7 @@ export default function Dashboard() {
           
           <div className="mb-8">
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-2">Dashboard</h1>
-            <p className="text-2xl md:text-3xl text-gray-800">Welcome, {username}!</p>
+            <p className="text-2xl md:text-3xl text-gray-800">Welcome, {displayFirstName}!</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
@@ -93,7 +122,7 @@ export default function Dashboard() {
             <div className="bg-white p-6 rounded-3xl shadow-lg flex flex-col items-center justify-center text-center">
               <h3 className="font-bold text-xl mb-4">Streak</h3>
               <img src={streakIcon} alt="Streak" className="h-16 mb-2 object-contain" />
-              <p className="font-bold text-lg text-gray-800">7 Days</p>
+]              <p className="font-bold text-lg text-gray-800">{userStreak} Days</p>
             </div>
 
             <Link to="/journaling" className="bg-white p-6 rounded-3xl shadow-lg flex flex-col items-center justify-center text-center hover:scale-105 transition-transform duration-300">

@@ -31,10 +31,10 @@ export default function Register() {
     setErrorMessage("");
 
     if (!formData.full_name || !formData.username || !formData.password) {
-      return setErrorMessage("Semua kolom harus diisi!");
+      return setErrorMessage("All fields must be filled out!");
     }
     if (formData.password !== formData.confirmPassword) {
-      return setErrorMessage("Password dan konfirmasi password tidak cocok!");
+      return setErrorMessage("Passwords do not match!");
     }
 
     setIsLoading(true);
@@ -46,12 +46,12 @@ export default function Register() {
         password: formData.password
       });
 
-      console.log("Registrasi berhasil:", response.data);
-      navigate("/login", { state: { message: "Registrasi berhasil! Silakan login." } });
+      console.log("Registration successful:", response.data);
+      navigate("/login", { state: { message: "Registration successful! Please login." } });
       
     } catch (error) {
-      console.error("Gagal registrasi:", error);
-      setErrorMessage(error.response?.data?.message || "Gagal terhubung ke server");
+      console.error("Failed to register:", error);
+      setErrorMessage(error.response?.data?.message || "Failed to connect to server");
     } finally {
       setIsLoading(false);
     }
@@ -147,7 +147,7 @@ export default function Register() {
                 isLoading ? 'bg-gray-400 cursor-not-allowed' : 'bg-emo-secondary hover:bg-emo-primary'
               }`}
             >
-              {isLoading ? "Memproses..." : "Create Account"}
+              {isLoading ? "Processing..." : "Create Account"}
             </button>
           </form>
 

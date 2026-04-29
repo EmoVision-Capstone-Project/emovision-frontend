@@ -38,7 +38,7 @@ export default function Login() {
     setSuccessMessage("");
 
     if (!formData.username || !formData.password) {
-      return setErrorMessage("Username dan password harus diisi!");
+      return setErrorMessage("Your password and username must be entered!");
     }
 
     setIsLoading(true);
@@ -47,12 +47,12 @@ export default function Login() {
       const response = await axios.post("http://localhost:5000/api/auth/login", formData);
       const userData = response.data.data;
       localStorage.setItem("user", JSON.stringify(userData));
-      console.log("Login sukses, sesi disimpan:", userData);
-      navigate("/journaling"); 
+      console.log("Login successful, session saved:", userData);
+      navigate("/dashboard"); 
       
     } catch (error) {
-      console.error("Gagal login:", error);
-      setErrorMessage(error.response?.data?.message || "Terjadi kesalahan. Coba lagi.");
+      console.error("Failed to login:", error);
+      setErrorMessage(error.response?.data?.message || "An error occurred. Please try again.");
     } finally {
       setIsLoading(false);
     }
