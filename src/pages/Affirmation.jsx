@@ -29,7 +29,8 @@ export default function Affirmation() {
 
   const fetchMyAffirmations = async (userId) => {
     try {
-      const response = await axios.get("http://localhost:5000/api/affirmations");
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/affirmations`);
+      
       if (response.data && Array.isArray(response.data.data)) {
         const myAffirms = response.data.data.filter(item => item.user_id === userId);
         setAffirmationsHistory(myAffirms);
@@ -37,7 +38,7 @@ export default function Affirmation() {
         setAffirmationsHistory([]);
       }
     } catch (error) {
-      console.error("Failed to retrieve the affirmation history:", error);
+      console.error("Gagal mengambil riwayat afirmasi:", error);
       setAffirmationsHistory([]); 
     }
   };
@@ -69,7 +70,7 @@ export default function Affirmation() {
     setStatusMessage({ text: "", type: "" });
 
     try {
-      const response = await axios.post("http://localhost:5000/api/affirmations", {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/affirmations`, {
         user_id: userData.user_id,
         content: currentAffirmation
       });

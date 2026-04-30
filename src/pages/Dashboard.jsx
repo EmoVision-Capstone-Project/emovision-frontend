@@ -48,7 +48,6 @@ export default function Dashboard() {
   const [currentMood, setCurrentMood] = useState("Happy");
   const [currentDate, setCurrentDate] = useState(new Date());
   
-  // State untuk menyimpan streak
   const [userStreak, setUserStreak] = useState(0);
 
   const moodImages = {
@@ -64,10 +63,10 @@ export default function Dashboard() {
         setUserData(parsedUser);
         
         try {
-          const response = await axios.get(`http://localhost:5000/api/journals/stats/${parsedUser.user_id}`);
+          const response = await axios.get(`${import.meta.env.VITE_API_URL}/journals/stats/${parsedUser.user_id}`);
           setUserStreak(response.data.data.current_streak);
         } catch (error) {
-          console.error("Failed to fetch streak data:", error);
+          console.error("Gagal mengambil data streak:", error);
         }
 
       } else {

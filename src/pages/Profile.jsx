@@ -62,9 +62,9 @@ export default function Profile() {
     setStatusMessage({ text: "", type: "" });
 
     try {
-      const response = await axios.put(`http://localhost:5000/api/users/${userData.user_id}`, {
+      const response = await axios.put(`${import.meta.env.VITE_API_URL}/users/${userData.user_id}`, {
         full_name: editFormData.name,
-        username: editFormData.username,
+        username: editFormData.username,    
         password: editFormData.password
       });
 

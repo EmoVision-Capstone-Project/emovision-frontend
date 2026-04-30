@@ -28,7 +28,7 @@ export default function Journaling() {
 
   const fetchMyJournals = async (userId) => {
     try {
-      const response = await axios.get("http://localhost:5000/api/journals");
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/journals`);
       if (response.data && Array.isArray(response.data.data)) {
         const myJournals = response.data.data.filter(journal => journal.user_id === userId);
         setJournalsHistory(myJournals);
@@ -76,7 +76,7 @@ export default function Journaling() {
     };
 
     try {
-      const response = await axios.post("http://localhost:5000/api/journals", journalData);
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/journals`, journalData);
       
       setStatusMessage({ text: "Yeay! Journal saved successfully.", type: "success" });
       setCurrentJournal("");
