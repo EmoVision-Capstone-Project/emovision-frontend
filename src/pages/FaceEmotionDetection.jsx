@@ -106,7 +106,6 @@ export default function FaceEmotionDetection() {
 
           <div className="flex flex-col lg:flex-row gap-10 items-start">
             
-            {/* Bagian Kamera */}
             <div className="flex-1 flex flex-col items-center w-full">
               <div className="w-full h-[400px] bg-black rounded-[32px] relative overflow-hidden mb-6 shadow-md flex items-center justify-center">
                 
@@ -119,9 +118,14 @@ export default function FaceEmotionDetection() {
                       className="w-full h-full object-cover"
                       mirrored={true} 
                     />
-                    {/* [BARU] Overlay Kotak Panduan (Face Guide Box) */}
-                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none gap-6">
                       <div className="w-48 h-64 border-4 border-dashed border-white/60 rounded-3xl shadow-[0_0_0_9999px_rgba(0,0,0,0.3)]"></div>
+                      
+                      <div className="bg-black/40 backdrop-blur-md border border-white/40 px-6 py-2.5 rounded-full shadow-lg">
+                        <p className="text-white text-sm font-semibold tracking-wide">
+                          Posisikan wajahmu di dalam garis, ya!
+                        </p>
+                      </div>
                     </div>
                   </>
                 ) : (
@@ -153,7 +157,6 @@ export default function FaceEmotionDetection() {
               )}
             </div>
 
-            {/* Bagian Hasil Deteksi */}
             <div className="w-full lg:w-[450px] bg-white p-8 rounded-[32px] shadow-lg">
               
               <div className="flex items-center gap-4 mb-5">
