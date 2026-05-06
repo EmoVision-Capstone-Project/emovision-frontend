@@ -32,6 +32,8 @@ export default function FaceEmotionDetection() {
   const [primaryEmotion, setPrimaryEmotion] = useState("Neutral");
   const [probabilities, setProbabilities] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  
+  const [capturedImage, setCapturedImage] = useState(null);
 
   const moodImages = {
     Happy: happyImg,
@@ -49,6 +51,7 @@ export default function FaceEmotionDetection() {
     const imageSrc = webcamRef.current.getScreenshot();
     if (!imageSrc) return;
 
+    setCapturedImage(imageSrc);
     setIsLoading(true);
 
     try {
@@ -70,14 +73,22 @@ export default function FaceEmotionDetection() {
         setProbabilities(data.probabilities);
       } else {
         alert("Error: " + (data.error || "Wajah tidak terdeteksi"));
+        setCapturedImage(null); 
       }
     } catch (error) {
       console.error("Gagal terhubung ke API:", error);
       alert("Gagal terhubung ke server backend! Pastikan uvicorn sedang jalan.");
+      setCapturedImage(null); 
     } finally {
       setIsLoading(false);
     }
   }, [webcamRef]);
+
+  const retakePhoto = () => {
+    setCapturedImage(null);
+    setPrimaryEmotion("Neutral");
+    setProbabilities({});
+  };
 
   return (
     <div className="flex h-screen bg-emo-bg font-fredoka overflow-hidden">
@@ -89,7 +100,7 @@ export default function FaceEmotionDetection() {
           <div className="mb-10">
             <h1 className="text-5xl font-bold text-gray-900 mb-3">Face Mood Detection</h1>
             <p className="text-3xl text-gray-800 leading-snug">
-              Let our AI translate your expressions into meaningful insights for emotional clarity.
+              Position your face inside the box and let our AI analyze your emotion.
             </p>
           </div>
 
@@ -97,24 +108,49 @@ export default function FaceEmotionDetection() {
             
             {/* Bagian Kamera */}
             <div className="flex-1 flex flex-col items-center w-full">
-              <div className="w-full h-[400px] bg-black rounded-[32px] relative overflow-hidden mb-6 shadow-md">
-                <Webcam
-                  audio={false}
-                  ref={webcamRef}
-                  screenshotFormat="image/jpeg"
-                  className="w-full h-full object-cover"
-                  mirrored={true} 
-                />
+              <div className="w-full h-[400px] bg-black rounded-[32px] relative overflow-hidden mb-6 shadow-md flex items-center justify-center">
+                
+                {!capturedImage ? (
+                  <>
+                    <Webcam
+                      audio={false}
+                      ref={webcamRef}
+                      screenshotFormat="image/jpeg"
+                      className="w-full h-full object-cover"
+                      mirrored={true} 
+                    />
+                    {/* [BARU] Overlay Kotak Panduan (Face Guide Box) */}
+                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                      <div className="w-48 h-64 border-4 border-dashed border-white/60 rounded-3xl shadow-[0_0_0_9999px_rgba(0,0,0,0.3)]"></div>
+                    </div>
+                  </>
+                ) : (
+                  <img 
+                    src={capturedImage} 
+                    alt="Captured" 
+                    className="w-full h-full object-cover" 
+                    style={{ transform: "scaleX(-1)" }} 
+                  />
+                )}
               </div>
 
-              <button 
-                onClick={captureAndAnalyze}
-                disabled={isLoading}
-                className={`text-white px-12 py-3.5 rounded-full font-bold text-lg transition-colors shadow-sm
-                  ${isLoading ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#AC87C5] hover:bg-[#9b75b3]'}`}
-              >
-                {isLoading ? "Analyzing..." : "Analyze Emotion"}
-              </button>
+              {!capturedImage ? (
+                <button 
+                  onClick={captureAndAnalyze}
+                  disabled={isLoading}
+                  className={`text-white px-12 py-3.5 rounded-full font-bold text-lg transition-colors shadow-sm
+                    ${isLoading ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#AC87C5] hover:bg-[#9b75b3]'}`}
+                >
+                  {isLoading ? "Analyzing..." : "Capture & Analyze"}
+                </button>
+              ) : (
+                <button 
+                  onClick={retakePhoto}
+                  className="bg-gray-600 hover:bg-gray-700 text-white px-12 py-3.5 rounded-full font-bold text-lg transition-colors shadow-sm"
+                >
+                  Retake Photo
+                </button>
+              )}
             </div>
 
             {/* Bagian Hasil Deteksi */}
@@ -139,15 +175,17 @@ export default function FaceEmotionDetection() {
               </div>
 
               <p className="text-[14px] text-gray-700 leading-relaxed mb-8 font-medium">
-                The AI identifies “{primaryEmotion}” as the dominant emotion from your current facial expression.
+                {capturedImage 
+                  ? `The AI identified "${primaryEmotion}" as the dominant emotion from your captured expression.`
+                  : "Waiting for capture... Position your face in the frame and click the button to analyze."
+                }
               </p>
 
-              {/* Looping Progress Bar Berdasarkan Data API */}
               <div className="flex flex-col gap-2">
                 {Object.keys(probabilities).length > 0 ? (
                   Object.entries(probabilities)
                     .sort((a, b) => b[1] - a[1])
-                    .slice(0, 3) // Tampilkan top 3 saja supaya tidak kepanjangan
+                    .slice(0, 3) 
                     .map(([label, percentage]) => (
                       <EmotionProgressBar 
                         key={label} 
