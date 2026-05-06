@@ -1,8 +1,8 @@
 import React, { useRef, useState, useCallback } from "react";
 import Webcam from "react-webcam";
-import { FiCamera } from "react-icons/fi";
 import Sidebar from "../components/Sidebar";
 import Footer from "../components/Footer";
+
 import happyImg from "../assets/happy.png";
 import angryImg from "../assets/angry.png";
 import fearImg from "../assets/fear.png";
@@ -19,7 +19,7 @@ const EmotionProgressBar = ({ label, percentage }) => (
     </div>
     <div className="w-full bg-gray-300 rounded-full h-3.5">
       <div
-        className="bg-[#D8A7CA] h-3.5 rounded-full"
+        className="bg-[#D8A7CA] h-3.5 rounded-full transition-all duration-500 ease-out"
         style={{ width: `${percentage}%` }}
       ></div>
     </div>
@@ -28,22 +28,55 @@ const EmotionProgressBar = ({ label, percentage }) => (
 
 export default function FaceEmotionDetection() {
   const webcamRef = useRef(null);
-  const [primaryEmotion, setPrimaryEmotion] = useState("Angry");
+  
+  const [primaryEmotion, setPrimaryEmotion] = useState("Neutral");
+  const [probabilities, setProbabilities] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
   const moodImages = {
     Happy: happyImg,
     Angry: angryImg,
     Fear: fearImg,
     Disgust: disgustImg,
-    Surprised: surprisedImg,
+    Surprise: surprisedImg,
     Neutral: neutralImg,
     Sad: sadImg,
   };
 
-  const captureAndAnalyze = useCallback(() => {
+  const captureAndAnalyze = useCallback(async () => {
     if (!webcamRef.current) return;
+    
     const imageSrc = webcamRef.current.getScreenshot();
-    console.log("Gambar berhasil ditangkap!", imageSrc);
+    if (!imageSrc) return;
+
+    setIsLoading(true);
+
+    try {
+      const res = await fetch(imageSrc);
+      const blob = await res.blob();
+
+      const formData = new FormData();
+      formData.append("file", blob, "webcam_capture.jpg");
+
+      const response = await fetch("http://127.0.0.1:8000/predict", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setPrimaryEmotion(data.emotion);
+        setProbabilities(data.probabilities);
+      } else {
+        alert("Error: " + (data.error || "Wajah tidak terdeteksi"));
+      }
+    } catch (error) {
+      console.error("Gagal terhubung ke API:", error);
+      alert("Gagal terhubung ke server backend! Pastikan uvicorn sedang jalan.");
+    } finally {
+      setIsLoading(false);
+    }
   }, [webcamRef]);
 
   return (
@@ -62,6 +95,7 @@ export default function FaceEmotionDetection() {
 
           <div className="flex flex-col lg:flex-row gap-10 items-start">
             
+            {/* Bagian Kamera */}
             <div className="flex-1 flex flex-col items-center w-full">
               <div className="w-full h-[400px] bg-black rounded-[32px] relative overflow-hidden mb-6 shadow-md">
                 <Webcam
@@ -75,18 +109,21 @@ export default function FaceEmotionDetection() {
 
               <button 
                 onClick={captureAndAnalyze}
-                className="bg-[#AC87C5] hover:bg-[#9b75b3] text-white px-12 py-3.5 rounded-full font-bold text-lg transition-colors shadow-sm"
+                disabled={isLoading}
+                className={`text-white px-12 py-3.5 rounded-full font-bold text-lg transition-colors shadow-sm
+                  ${isLoading ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#AC87C5] hover:bg-[#9b75b3]'}`}
               >
-                Analyze Emotion
+                {isLoading ? "Analyzing..." : "Analyze Emotion"}
               </button>
             </div>
 
+            {/* Bagian Hasil Deteksi */}
             <div className="w-full lg:w-[450px] bg-white p-8 rounded-[32px] shadow-lg">
               
               <div className="flex items-center gap-4 mb-5">
                 <div className="w-20 h-20 flex-shrink-0">
                   <img 
-                    src={moodImages[primaryEmotion]} 
+                    src={moodImages[primaryEmotion] || moodImages["Neutral"]} 
                     alt={primaryEmotion} 
                     className="w-full h-full object-contain" 
                   />
@@ -102,13 +139,29 @@ export default function FaceEmotionDetection() {
               </div>
 
               <p className="text-[14px] text-gray-700 leading-relaxed mb-8 font-medium">
-                The webcam feature identifies “{primaryEmotion}” as the dominant emotion with a high degree of confidence, as indicated by forehead wrinkles or pursed lips during live detection.
+                The AI identifies “{primaryEmotion}” as the dominant emotion from your current facial expression.
               </p>
 
+              {/* Looping Progress Bar Berdasarkan Data API */}
               <div className="flex flex-col gap-2">
-                <EmotionProgressBar label="Angry" percentage={92} />
-                <EmotionProgressBar label="Neutral" percentage={22} />
-                <EmotionProgressBar label="Depressed" percentage={12} />
+                {Object.keys(probabilities).length > 0 ? (
+                  Object.entries(probabilities)
+                    .sort((a, b) => b[1] - a[1])
+                    .slice(0, 3) // Tampilkan top 3 saja supaya tidak kepanjangan
+                    .map(([label, percentage]) => (
+                      <EmotionProgressBar 
+                        key={label} 
+                        label={label} 
+                        percentage={percentage.toFixed(1)} 
+                      />
+                    ))
+                ) : (
+                  <>
+                    <EmotionProgressBar label="Neutral" percentage={0} />
+                    <EmotionProgressBar label="Happy" percentage={0} />
+                    <EmotionProgressBar label="Sad" percentage={0} />
+                  </>
+                )}
               </div>
 
             </div>
