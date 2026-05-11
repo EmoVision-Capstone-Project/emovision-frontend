@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { FiChevronLeft, FiChevronRight, FiEdit3 } from "react-icons/fi";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import axios from "axios";
 import Sidebar from "../components/Sidebar";
@@ -124,9 +124,18 @@ export default function Dashboard() {
                 <p className="font-bold text-lg text-gray-800">{userStreak} Days</p>
             </div>
 
-            <Link to="/journaling" className="bg-white p-6 rounded-3xl shadow-lg flex flex-col items-center justify-center text-center hover:scale-105 transition-transform duration-300">
-              <h3 className="font-bold text-xl mb-4 text-emo-primary">Gentle Reminder</h3>
-              <p className="font-medium text-gray-700">Don't forget fill your journal today!!</p>
+            <Link to="/journaling" className="bg-white p-6 rounded-3xl shadow-lg flex flex-col items-center justify-center text-center hover:scale-105 transition-transform duration-300 group">
+              <h3 className="font-bold text-xl mb-2 text-emo-primary">Gentle Reminder</h3>
+              
+              <div className="h-14 flex items-center justify-center mb-3 text-[#AC87C5] group-hover:scale-110 group-hover:-rotate-12 transition-transform duration-300">
+                <FiEdit3 size={40} />
+              </div>
+
+              <p className="font-medium text-gray-700 mb-4 leading-tight">Don't forget to fill your journal today!!</p>
+              
+              <div className="bg-[#AC87C5] text-white px-6 py-2 rounded-full font-bold text-sm shadow-sm group-hover:bg-[#9b75b3] transition-colors flex items-center gap-2">
+                Click Here <FiChevronRight size={16} />
+              </div>
             </Link>
           </div>
 
