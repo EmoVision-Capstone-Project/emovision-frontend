@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { FiMenu, FiGrid, FiBookOpen, FiCamera, FiMessageCircle, FiUser, FiLogOut } from "react-icons/fi";
+import { FiMenu, FiGrid, FiBookOpen, FiCamera, FiMessageCircle, FiUser, FiLogOut, FiWind } from "react-icons/fi";
 import logoImg from "../assets/logo.png";
 
 export default function Sidebar() {
@@ -33,6 +33,7 @@ export default function Sidebar() {
     { title: "JOURNALING", icon: <FiBookOpen size={24} />, path: "/journaling" },
     { title: "FACE MOOD DETECTION", icon: <FiCamera size={24} />, path: "/face-mood" },
     { title: "AFFIRMATION", icon: <FiMessageCircle size={24} />, path: "/affirmation" },
+    { title: "MINDFUL BREATHING", icon: <FiWind size={24} />, path: "/breathing" },
   ];
 
   return (

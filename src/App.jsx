@@ -7,6 +7,7 @@ import Profile from "./pages/Profile";
 import Affirmation from "./pages/Affirmation";
 import FaceMoodDetection from "./pages/FaceEmotionDetection";
 import Journaling from "./pages/Journaling";
+import BreathingExercise from "./pages/BreathingExercise"; 
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/affirmation" element={<Affirmation />} /> 
         <Route path="/face-mood" element={<FaceMoodDetection />} />
         <Route path="/journaling" element={<Journaling />} />
+        <Route path="/breathing" element={<BreathingExercise />} />
       </Routes>
     </Router>
   );
