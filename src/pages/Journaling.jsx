@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { FiChevronDown, FiChevronUp, FiBookOpen, FiX } from "react-icons/fi";
 import axios from "axios";
@@ -17,6 +17,8 @@ export default function Journaling() {
   const [showStreakModal, setShowStreakModal] = useState(false);
   const [newStreakCount, setNewStreakCount] = useState(0);
   const [journalsHistory, setJournalsHistory] = useState([]);
+
+  const myJourneyRef = useRef(null);
 
   const formatDate = (dateString) => {
     if (!dateString) return "Just now";
@@ -89,6 +91,10 @@ export default function Journaling() {
         setNewStreakCount(response.data.currentStreak);
         setShowStreakModal(true); 
       }
+
+      setTimeout(() => {
+        myJourneyRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
       
     } catch (error) {
       console.error("Failed to save:", error);
@@ -169,7 +175,7 @@ export default function Journaling() {
             </div>
           </div>
 
-          <div className="mb-20">
+          <div className="mb-20" ref={myJourneyRef}>
             <h2 className="text-4xl font-bold text-gray-900 mb-8">My Journey</h2>
             
             {journalsHistory.length === 0 ? (
