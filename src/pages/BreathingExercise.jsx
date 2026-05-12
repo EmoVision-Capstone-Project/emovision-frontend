@@ -1,14 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import meditationAudio from "../assets/meditation-music.mp3";
 import Sidebar from "../components/Sidebar";
 import Footer from "../components/Footer";
 import { FiWind, FiHeart, FiZap, FiMoon, FiX, FiRefreshCw, FiArrowLeft } from "react-icons/fi";
 
 export default function BreathingExercise() {
   const [isStarted, setIsStarted] = useState(false);
+  const audioRef = useRef(null);
   const [phase, setPhase] = useState("Inhale");
   const [timer, setTimer] = useState(4);
   const [isFinished, setIsFinished] = useState(false);
   const [isAnimateActive, setIsAnimateActive] = useState(false);
+
+  useEffect(() => {
+    if (isStarted && !isFinished && audioRef.current) {
+      audioRef.current.play().catch((err) => console.log("Audio play blocked: ", err));
+    } else if (audioRef.current) {
+      audioRef.current.pause();
+      if (!isStarted) audioRef.current.currentTime = 0; 
+    }
+  }, [isStarted, isFinished]);
 
   useEffect(() => {
     let interval = null;
@@ -96,7 +107,9 @@ export default function BreathingExercise() {
 
         {isStarted && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm transition-all duration-300">
-            <audio autoPlay loop><source src="/assets/meditation-music.mp3" type="audio/mpeg" /></audio>
+            <audio ref={audioRef} loop>
+              <source src={meditationAudio} type="audio/mpeg" />
+            </audio>
             
             <div className="bg-white rounded-[40px] p-10 max-w-[600px] w-full mx-4 shadow-2xl relative text-center flex flex-col items-center justify-center min-h-[500px] animate-fadeIn">
               
