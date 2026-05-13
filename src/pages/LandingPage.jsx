@@ -4,6 +4,7 @@ import aboutImg from "../assets/about-illustration.png";
 import iconCamera from "../assets/icon-camera.png";
 import iconLaptop from "../assets/icon-laptop.png";
 import iconAffirmation from "../assets/icon-affirmation.png";
+import iconBreathing from "../assets/icon-breathing.png";
 import iconGraphic from "../assets/icon-graphic.png";
 import iconStreak from "../assets/icon-streak.png";
 import iconQuotes from "../assets/icon-quotes.png";
@@ -24,6 +25,11 @@ const featuresData = [
     title: "AFFIRMATION",
     icon: <img src={iconAffirmation} alt="Affirmation Icon" className="h-30 mb-6 object-contain" />,
     desc: "Users can write a positive message or a personal resolution for themselves today."
+  },
+  {
+    title: "MINDFUL BREATHING",
+    icon: <img src={iconBreathing} alt="Breathing Icon" className="h-30 mb-6 object-contain" />,
+    desc: "Relax your mind and body with guided 4-7-8 breathing techniques."
   },
   {
     title: "MOOD GRAPHIC",
@@ -104,7 +110,6 @@ export default function LandingPage() {
       </section>
 
       <section id="features" className="py-20 px-10 md:px-20 bg-emo-bg text-center">
-        
         <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gray-900">
           Why is <span className="text-emo-primary">EmoVision</span>?
         </h2>
@@ -112,22 +117,38 @@ export default function LandingPage() {
           We don't just provide data, we also offer insights through features such as:
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          
-          {featuresData.map((feature, index) => (
-            <div 
-              key={index} 
-              className={`
-                ${index % 2 === 0 ? 'bg-emo-secondary' : 'bg-emo-primary'} 
-                text-white p-15 rounded-3xl shadow-lg flex flex-col items-center text-center transform transition-all duration-300 hover:-translate-y-3 hover:shadow-2xl
-              `}
-            >
-              <h3 className="font-bold text-xl mb-3 tracking-wide">{feature.title}</h3>
-              {feature.icon}
-              <p className="text-sm leading-relaxed opacity-90">{feature.desc}</p>
-            </div>
-          ))}
+        <div className="max-w-7xl mx-auto flex flex-col gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {featuresData.slice(0, 4).map((feature, index) => (
+              <div 
+                key={index} 
+                className={`
+                  ${index % 2 === 0 ? 'bg-emo-secondary' : 'bg-emo-primary'} 
+                  text-white p-10 rounded-[40px] shadow-lg flex flex-col items-center text-center transform transition-all duration-300 hover:-translate-y-3 hover:shadow-2xl
+                `}
+              >
+                <h3 className="font-bold text-lg mb-3 tracking-wide">{feature.title}</h3>
+                {feature.icon}
+                <p className="text-xs leading-relaxed opacity-90">{feature.desc}</p>
+              </div>
+            ))}
+          </div>
 
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:px-32">
+            {featuresData.slice(4).map((feature, index) => (
+              <div 
+                key={index} 
+                className={`
+                  ${index % 2 === 0 ? 'bg-emo-primary' : 'bg-emo-secondary'} 
+                  text-white p-10 rounded-[40px] shadow-lg flex flex-col items-center text-center transform transition-all duration-300 hover:-translate-y-3 hover:shadow-2xl
+                `}
+              >
+                <h3 className="font-bold text-lg mb-3 tracking-wide">{feature.title}</h3>
+                {feature.icon}
+                <p className="text-xs leading-relaxed opacity-90">{feature.desc}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
       <Footer />
