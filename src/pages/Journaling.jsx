@@ -118,15 +118,13 @@ export default function Journaling() {
       <div className="flex-1 overflow-y-auto">
         <div className="p-5 pt-20 md:p-10 max-w-6xl mx-auto min-h-screen">
           <div className="mb-8">
-            <h1 className="text-5xl font-bold text-gray-900 mb-2 italic">Journaling</h1>
-            <p className="text-3xl text-gray-700 bg-[#FFF5E1] inline-block px-3 py-1 rounded-md italic">
-              How are you feeling today?
-            </p>
+            <h1 className="text-5xl font-bold text-gray-900 mb-2 tracking-tight">Journaling</h1>
+            <p className="text-3xl text-gray-700">How are you feeling today?</p>
           </div>
 
           <div className="bg-white p-8 rounded-[40px] shadow-lg flex flex-col mb-10 min-h-[300px] relative">
             <textarea
-              className="w-full flex-1 resize-none outline-none text-xl text-gray-700 placeholder-gray-400 bg-transparent disabled:opacity-50 italic font-medium"
+              className="w-full flex-1 resize-none outline-none text-xl text-gray-700 placeholder-gray-400 bg-transparent disabled:opacity-50 font-medium"
               placeholder="Write Your Heart Out..."
               maxLength={200}
               value={currentJournal}
@@ -143,7 +141,7 @@ export default function Journaling() {
                 )}
               </div>
               <div className="flex items-center gap-6">
-                <span className="text-gray-400 font-medium text-lg italic">
+                <span className="text-gray-400 font-medium text-lg">
                   {currentJournal.length}/200
                 </span>
                 <button
@@ -164,7 +162,7 @@ export default function Journaling() {
               <div className="w-24 h-24 mb-6">
                 <img src={angryImg} alt="Angry Mood" className="w-full h-full object-contain drop-shadow-md" />
               </div>
-              <h3 className="font-bold text-2xl mb-4 italic">Mood Today</h3>
+              <h3 className="font-bold text-2xl mb-4">Mood Today</h3>
               <div className="flex flex-col gap-2 w-full">
                  <div className="bg-[#AC87C5] py-2 rounded-full text-center text-sm font-bold">Angry 90%</div>
                  <div className="bg-[#AC87C5]/60 py-2 rounded-full text-center text-sm font-bold">Neutral 10%</div>
@@ -174,7 +172,7 @@ export default function Journaling() {
             <div className="bg-[#D8A7CA] p-10 rounded-[40px] shadow-lg text-white md:col-span-2 flex flex-col items-center justify-center min-h-[250px]">
               {!showAiResult ? (
                 <div className="text-center">
-                  <h3 className="font-bold text-2xl mb-6 italic tracking-wide">Ingin melihat saran AI?</h3>
+                  <h3 className="font-bold text-2xl mb-6">Want some AI insights?</h3>
                   <button 
                     onClick={() => setShowAiResult(true)}
                     className="bg-white text-[#AC87C5] px-10 py-3 rounded-full font-bold hover:bg-gray-100 transition-all flex items-center gap-2 mx-auto shadow-md"
@@ -194,7 +192,7 @@ export default function Journaling() {
           </div>
 
           <div className="mb-20" ref={myJourneyRef}>
-            <h2 className="text-4xl font-bold text-gray-900 mb-8 italic">My Journey</h2>
+            <h2 className="text-4xl font-bold text-gray-900 mb-8 ">My Journey</h2>
             
             {journalsHistory.length === 0 ? (
               <p className="text-gray-500 text-xl italic">No journal entries have been written yet. Let’s start writing today!</p>
@@ -232,10 +230,10 @@ export default function Journaling() {
                         </span>
 
                         <div className="mt-4 p-6 bg-white/60 rounded-3xl border-l-8 border-[#AC87C5] shadow-sm">
-                          <h4 className="text-[#AC87C5] font-bold italic mb-2 flex items-center gap-2">
+                          <h4 className="text-[#AC87C5] font-bold mb-2 flex items-center gap-2">
                             <FiZap size={20}/> AI Feedback:
                           </h4>
-                          <p className="text-gray-700 italic leading-relaxed font-medium">
+                          <p className="text-gray-700 leading-relaxed font-medium">
                             {item.ai_feedback || "Hasil analisis AI sedang diproses untuk jurnal ini..."}
                           </p>
                         </div>
