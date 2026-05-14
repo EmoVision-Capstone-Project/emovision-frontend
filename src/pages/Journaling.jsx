@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { FiChevronDown, FiChevronUp, FiBookOpen, FiX } from "react-icons/fi";
+import { FiChevronDown, FiChevronUp, FiBookOpen, FiX, FiZap } from "react-icons/fi";
 import axios from "axios";
 import Sidebar from "../components/Sidebar";
 import Footer from "../components/Footer";
@@ -17,7 +17,8 @@ export default function Journaling() {
   const [showStreakModal, setShowStreakModal] = useState(false);
   const [newStreakCount, setNewStreakCount] = useState(0);
   const [journalsHistory, setJournalsHistory] = useState([]);
-
+  const [showAiResult, setShowAiResult] = useState(false);
+  const resultSectionRef = useRef(null);
   const myJourneyRef = useRef(null);
 
   const formatDate = (dateString) => {
@@ -39,7 +40,7 @@ export default function Journaling() {
       }
     } catch (error) {
       console.error("Failed to fetch journal history:", error);
-      setJournalsHistory([]); 
+      setJournalsHistory([]);
     }
   };
 
@@ -70,11 +71,11 @@ export default function Journaling() {
     setStatusMessage({ text: "", type: "" });
 
     const journalData = {
-      user_id: userData.user_id, 
+      user_id: userData.user_id,
       content: currentJournal,
-      mood_result: "Neutral", 
-      ai_accuracy_score: 0.85, 
-      ai_feedback: "Feature detection is being processed..." 
+      mood_result: "Angry", 
+      ai_accuracy_score: 0.85,
+      ai_feedback: "Sepertinya Anda sedang melewati hari yang cukup menantang. Merasa marah adalah hal yang manusiawi. Cobalah untuk mengambil napas dalam-dalam atau mencoba fitur Mindful Breathing kami."
     };
 
     try {
@@ -82,6 +83,7 @@ export default function Journaling() {
       
       setStatusMessage({ text: "Yeay! Journal saved successfully.", type: "success" });
       setCurrentJournal("");
+      setShowAiResult(false); 
       
       if (response.data.data) {
         setJournalsHistory([response.data.data, ...journalsHistory]);
@@ -89,12 +91,12 @@ export default function Journaling() {
       
       if (response.data.isStreakUpdated) {
         setNewStreakCount(response.data.currentStreak);
-        setShowStreakModal(true); 
+        setShowStreakModal(true);
       }
 
       setTimeout(() => {
-        myJourneyRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 100);
+        resultSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 500);
       
     } catch (error) {
       console.error("Failed to save:", error);
@@ -116,13 +118,15 @@ export default function Journaling() {
       <div className="flex-1 overflow-y-auto">
         <div className="p-5 pt-20 md:p-10 max-w-6xl mx-auto min-h-screen">
           <div className="mb-8">
-            <h1 className="text-5xl font-bold text-gray-900 mb-2">Journaling</h1>
-            <p className="text-3xl text-gray-700">How are you feeling today?</p>
+            <h1 className="text-5xl font-bold text-gray-900 mb-2 italic">Journaling</h1>
+            <p className="text-3xl text-gray-700 bg-[#FFF5E1] inline-block px-3 py-1 rounded-md italic">
+              How are you feeling today?
+            </p>
           </div>
 
           <div className="bg-white p-8 rounded-[40px] shadow-lg flex flex-col mb-10 min-h-[300px] relative">
             <textarea
-              className="w-full flex-1 resize-none outline-none text-xl text-gray-700 placeholder-gray-400 bg-transparent disabled:opacity-50"
+              className="w-full flex-1 resize-none outline-none text-xl text-gray-700 placeholder-gray-400 bg-transparent disabled:opacity-50 italic font-medium"
               placeholder="Write Your Heart Out..."
               maxLength={200}
               value={currentJournal}
@@ -139,14 +143,14 @@ export default function Journaling() {
                 )}
               </div>
               <div className="flex items-center gap-6">
-                <span className="text-gray-400 font-medium text-lg">
+                <span className="text-gray-400 font-medium text-lg italic">
                   {currentJournal.length}/200
                 </span>
-                <button 
+                <button
                   onClick={handleSave}
                   disabled={isLoading}
                   className={`px-10 py-3 rounded-full font-bold text-lg transition-all shadow-md text-white ${
-                    isLoading ? "bg-gray-400 cursor-not-allowed" : "bg-[#AC87C5] hover:bg-[#9b75b3]"
+                    isLoading ? "bg-gray-400 cursor-not-allowed" : "bg-[#AC87C5] hover:bg-[#9b75b3] hover:scale-105"
                   }`}
                 >
                   {isLoading ? "Saving..." : "Save Journal"}
@@ -155,28 +159,42 @@ export default function Journaling() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16" ref={resultSectionRef}>
             <div className="bg-[#D8A7CA] p-8 rounded-[40px] shadow-lg flex flex-col items-center justify-center text-white">
               <div className="w-24 h-24 mb-6">
                 <img src={angryImg} alt="Angry Mood" className="w-full h-full object-contain drop-shadow-md" />
               </div>
-              <h3 className="font-bold text-2xl mb-4">Mood Today</h3>
+              <h3 className="font-bold text-2xl mb-4 italic">Mood Today</h3>
               <div className="flex flex-col gap-2 w-full">
                  <div className="bg-[#AC87C5] py-2 rounded-full text-center text-sm font-bold">Angry 90%</div>
-                 <div className="bg-[#AC87C5]/60 py-2 rounded-full text-center text-sm font-bold">Neutral 25%</div>
+                 <div className="bg-[#AC87C5]/60 py-2 rounded-full text-center text-sm font-bold">Neutral 10%</div>
               </div>
             </div>
 
-            <div className="bg-[#D8A7CA] p-10 rounded-[40px] shadow-lg text-white md:col-span-2 flex flex-col justify-center">
-              <h3 className="font-bold text-3xl mb-6 italic">AI Generate</h3>
-              <p className="text-lg font-medium leading-relaxed italic">
-                "Sepertinya Anda sedang melewati momen yang cukup menguras emosi hari ini. Tidak apa-apa untuk merasa marah; itu adalah perasaan yang valid..."
-              </p>
+            <div className="bg-[#D8A7CA] p-10 rounded-[40px] shadow-lg text-white md:col-span-2 flex flex-col items-center justify-center min-h-[250px]">
+              {!showAiResult ? (
+                <div className="text-center">
+                  <h3 className="font-bold text-2xl mb-6 italic tracking-wide">Ingin melihat saran AI?</h3>
+                  <button 
+                    onClick={() => setShowAiResult(true)}
+                    className="bg-white text-[#AC87C5] px-10 py-3 rounded-full font-bold hover:bg-gray-100 transition-all flex items-center gap-2 mx-auto shadow-md"
+                  >
+                    <FiZap /> AI Generate
+                  </button>
+                </div>
+              ) : (
+                <div className="animate-fadeIn text-center md:text-left">
+                  <h3 className="font-bold text-3xl mb-4 italic border-b-2 border-white/30 inline-block">AI Generate</h3>
+                  <p className="text-lg font-medium leading-relaxed italic mt-4">
+                    "Sepertinya Anda sedang melewati hari yang cukup menantang. Merasa marah adalah hal yang manusiawi. Cobalah untuk mengambil napas dalam-dalam atau mencoba fitur Mindful Breathing kami."
+                  </p>
+                </div>
+              )}
             </div>
           </div>
 
           <div className="mb-20" ref={myJourneyRef}>
-            <h2 className="text-4xl font-bold text-gray-900 mb-8">My Journey</h2>
+            <h2 className="text-4xl font-bold text-gray-900 mb-8 italic">My Journey</h2>
             
             {journalsHistory.length === 0 ? (
               <p className="text-gray-500 text-xl italic">No journal entries have been written yet. Let’s start writing today!</p>
@@ -184,32 +202,43 @@ export default function Journaling() {
               <div className="flex flex-col gap-5">
                 {journalsHistory.map((item) => (
                   <div key={item.journal_id} className="flex flex-col w-full">
-                    <button 
+                    <button
                       onClick={() => toggleDropdown(item.journal_id)}
-                      className="bg-white p-6 rounded-[25px] shadow-md flex items-center justify-between hover:bg-gray-50 transition-all z-10"
+                      className={`p-6 rounded-[25px] shadow-md flex items-center justify-between hover:bg-gray-50 transition-all z-10 ${
+                        openId === item.journal_id ? "bg-[#AC87C5] text-white" : "bg-white text-gray-800"
+                      }`}
                     >
                       <div className="flex items-center gap-6">
-                        <div className="bg-[#AC87C5] p-4 rounded-2xl text-white">
-                          <FiBookOpen size={28} />
+                        <div className={`p-4 rounded-2xl ${openId === item.journal_id ? "bg-white/20" : "bg-[#FDF0F6]"}`}>
+                          <FiBookOpen size={28} className={openId === item.journal_id ? "text-white" : "text-[#AC87C5]"} />
                         </div>
-                        <span className="text-2xl font-bold text-gray-800">
+                        <span className="text-2xl font-bold">
                           {formatDate(item.created_at)}
                         </span>
                       </div>
-                      {openId === item.journal_id ? 
-                        <FiChevronUp size={35} className="text-[#AC87C5]" /> : 
+                      {openId === item.journal_id ?
+                        <FiChevronUp size={35} /> :
                         <FiChevronDown size={35} className="text-[#AC87C5]" />
                       }
                     </button>
 
                     {openId === item.journal_id && (
-                      <div className="bg-[#FDF0F6] mx-4 p-8 rounded-b-[30px] shadow-inner -mt-4 pt-12 animate-fadeIn transition-all">
-                        <p className="text-xl text-gray-800 leading-relaxed font-medium mb-6">
-                          {item.content}
+                      <div className="bg-[#FDF0F6] mx-4 p-8 rounded-b-[30px] shadow-inner -mt-4 pt-12 animate-fadeIn border-t border-dashed border-[#AC87C5]/30">
+                        <p className="text-xl text-gray-800 leading-relaxed font-medium mb-6 italic">
+                          "{item.content}"
                         </p>
-                        <span className="inline-block bg-[#AC87C5] text-white px-8 py-2 rounded-full text-lg font-bold">
+                        <span className="inline-block bg-[#AC87C5] text-white px-8 py-2 rounded-full text-lg font-bold mb-6">
                           {item.mood_result}
                         </span>
+
+                        <div className="mt-4 p-6 bg-white/60 rounded-3xl border-l-8 border-[#AC87C5] shadow-sm">
+                          <h4 className="text-[#AC87C5] font-bold italic mb-2 flex items-center gap-2">
+                            <FiZap size={20}/> AI Feedback:
+                          </h4>
+                          <p className="text-gray-700 italic leading-relaxed font-medium">
+                            {item.ai_feedback || "Hasil analisis AI sedang diproses untuk jurnal ini..."}
+                          </p>
+                        </div>
                       </div>
                     )}
                   </div>
@@ -224,24 +253,19 @@ export default function Journaling() {
 
       {showStreakModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur-md transition-all duration-300">
-          <div className="bg-white rounded-3xl p-8 max-w-[360px] w-full mx-4 shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-gray-100 transform scale-100 relative text-center flex flex-col items-center animate-bounce-short">
+          <div className="bg-white rounded-3xl p-8 max-w-[360px] w-full mx-4 shadow-2xl border border-gray-100 transform scale-100 relative text-center flex flex-col items-center animate-bounce-short">
             <button onClick={() => setShowStreakModal(false)} className="absolute top-4 right-4 text-gray-400 hover:text-gray-700 transition-colors">
               <FiX size={24} />
             </button>
             <div className="w-24 h-24 mb-4 mt-2">
-              <img src={streakIcon} alt="Streak Achieved" className="w-full h-full object-contain drop-shadow-sm animate-pulse" />
+              <img src={streakIcon} alt="Streak Achieved" className="w-full h-full object-contain animate-pulse" />
             </div>
-            <h2 className="text-[64px] font-extrabold text-[#2F3640] leading-none tracking-tight mb-1">
+            <h2 className="text-[64px] font-extrabold text-[#2F3640] leading-none mb-1">
               {newStreakCount}
             </h2>
-            <p className="text-xl font-bold text-[#4B5563] mb-6">
-              days in a row
-            </p>
-            <p className="text-[15px] text-[#6B7280] mb-8 leading-relaxed px-2">
-              To discover more about yourself, keep up your daily journaling or affirmations practice!
-            </p>
-            <button onClick={() => setShowStreakModal(false)} className="bg-[#2D3748] hover:bg-[#1A202C] text-white w-full py-3.5 rounded-lg font-bold text-[15px] shadow-sm transition-colors">
-              Continue writing journals
+            <p className="text-xl font-bold text-[#4B5563] mb-6">days in a row</p>
+            <button onClick={() => setShowStreakModal(false)} className="bg-[#AC87C5] hover:bg-[#9b75b3] text-white w-full py-3.5 rounded-2xl font-bold text-lg shadow-md transition-all">
+              Awesome!
             </button>
           </div>
         </div>
