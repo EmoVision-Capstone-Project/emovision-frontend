@@ -2,7 +2,6 @@ import React, { useRef, useState, useCallback } from "react";
 import Webcam from "react-webcam";
 import Sidebar from "../components/Sidebar";
 import Footer from "../components/Footer";
-
 import happyImg from "../assets/happy.png";
 import angryImg from "../assets/angry.png";
 import fearImg from "../assets/fear.png";
@@ -61,7 +60,7 @@ export default function FaceEmotionDetection() {
       const formData = new FormData();
       formData.append("file", blob, "webcam_capture.jpg");
 
-      const response = await fetch("http://127.0.0.1:8000/predict", {
+      const response = await fetch("http://127.0.0.1:8000/api/face/predict", {
         method: "POST",
         body: formData,
       });
