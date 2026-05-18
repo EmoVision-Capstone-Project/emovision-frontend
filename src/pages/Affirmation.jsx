@@ -29,7 +29,7 @@ export default function Affirmation() {
 
   const fetchMyAffirmations = async (userId) => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_API_URL}/affirmations`);
+      const response = await axios.get("https://emovision-backend-production.up.railway.app/api/affirmations");
       
       if (response.data && Array.isArray(response.data.data)) {
         const myAffirms = response.data.data.filter(item => item.user_id === userId);
@@ -70,7 +70,7 @@ export default function Affirmation() {
     setStatusMessage({ text: "", type: "" });
 
     try {
-      const response = await axios.post(`${import.meta.env.VITE_API_URL}/affirmations`, {
+      const response = await axios.post("https://emovision-backend-production.up.railway.app/api/affirmations", {
         user_id: userData.user_id,
         content: currentAffirmation
       });

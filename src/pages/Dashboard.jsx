@@ -63,7 +63,7 @@ export default function Dashboard() {
         setUserData(parsedUser);
         
         try {
-          const response = await axios.get(`${import.meta.env.VITE_API_URL}/journals/stats/${parsedUser.user_id}`);
+          const response = await axios.get(`https://emovision-backend-production.up.railway.app/api/journals/stats/${parsedUser.user_id}`);
           setUserStreak(response.data.data.current_streak);
         } catch (error) {
           console.error("Gagal mengambil data streak:", error);

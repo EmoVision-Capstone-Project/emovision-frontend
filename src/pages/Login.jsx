@@ -44,7 +44,7 @@ export default function Login() {
     setIsLoading(true);
 
     try {
-      const response = await axios.post("http://localhost:5000/api/auth/login", formData);
+      const response = await axios.post("https://emovision-backend-production.up.railway.app/api/auth/login", formData);
       const userData = response.data.data;
       localStorage.setItem("user", JSON.stringify(userData));
       console.log("Login successful, session saved:", userData);

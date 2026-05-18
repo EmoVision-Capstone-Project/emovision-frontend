@@ -40,7 +40,7 @@ export default function Register() {
     setIsLoading(true);
 
     try {
-      const response = await axios.post("http://localhost:5000/api/auth/register", {
+      const response = await axios.post("https://emovision-backend-production.up.railway.app/api/auth/register", {
         full_name: formData.full_name,
         username: formData.username,
         password: formData.password

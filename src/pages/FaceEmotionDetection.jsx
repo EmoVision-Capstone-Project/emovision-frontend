@@ -60,7 +60,7 @@ export default function FaceEmotionDetection() {
       const formData = new FormData();
       formData.append("file", blob, "webcam_capture.jpg");
 
-      const response = await fetch("http://127.0.0.1:8000/api/face/predict", {
+      const response = await fetch("https://fadidinna-emovision-api.hf.space/api/face/predict", {
         method: "POST",
         body: formData,
       });

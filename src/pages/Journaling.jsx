@@ -48,7 +48,7 @@ export default function Journaling() {
 
   const fetchMyJournals = async (userId) => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_API_URL}/journals`);
+      const response = await axios.get("https://emovision-backend-production.up.railway.app/api/journals");
       if (response.data && Array.isArray(response.data.data)) {
         const myJournals = response.data.data.filter(journal => journal.user_id === userId);
         setJournalsHistory(myJournals);
@@ -88,7 +88,7 @@ export default function Journaling() {
     setStatusMessage({ text: "Analyzing your mood...", type: "" }); 
 
     try {
-      const aiResponse = await axios.post("http://127.0.0.1:8000/api/text/predict", {
+      const aiResponse = await axios.post("https://fadidinna-emovision-api.hf.space/api/text/predict", {
         text: currentJournal,
         with_insight: true 
       });
@@ -105,7 +105,7 @@ export default function Journaling() {
       };
 
       setStatusMessage({ text: "Saving to database...", type: "" });
-      const response = await axios.post(`${import.meta.env.VITE_API_URL}/journals`, journalData);
+      const response = await axios.post("https://emovision-backend-production.up.railway.app/api/journals", journalData);
       
       setStatusMessage({ text: "Yeay! Journal saved successfully.", type: "success" });
       setCurrentJournal("");
