@@ -144,8 +144,8 @@ export default function Journaling() {
       <div className="flex-1 overflow-y-auto">
         <div className="p-5 pt-20 md:p-10 max-w-6xl mx-auto min-h-screen">
           <div className="mb-8">
-            <h1 className="text-5xl font-bold text-gray-900 mb-2 italic">Journaling</h1>
-            <p className="text-3xl text-gray-700 bg-[#FFF5E1] inline-block px-3 py-1 rounded-md italic">
+            <h1 className="text-5xl font-bold text-gray-900 mb-2">Journaling</h1>
+            <p className="text-3xl text-gray-800 leading-snug">
               How are you feeling today?
             </p>
           </div>
@@ -169,7 +169,7 @@ export default function Journaling() {
                 )}
               </div>
               <div className="flex items-center gap-6">
-                <span className="text-gray-400 font-medium text-lg italic">
+                <span className="text-gray-400 font-medium text-lg">
                   {currentJournal.length}/200
                 </span>
                 <button
@@ -186,7 +186,6 @@ export default function Journaling() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16" ref={resultSectionRef}>
-            {/* Bagian Mood Today */}
             <div className="bg-[#D8A7CA] p-8 rounded-[40px] shadow-lg flex flex-col items-center justify-center text-white">
               <div className="w-24 h-24 mb-6">
                 <img 
@@ -195,7 +194,7 @@ export default function Journaling() {
                   className="w-full h-full object-contain drop-shadow-md transition-all duration-500" 
                 />
               </div>
-              <h3 className="font-bold text-2xl mb-4 italic">Mood Today</h3>
+              <h3 className="font-bold text-2xl mb-4">Mood Today</h3>
               <div className="flex flex-col gap-2 w-full">
                  {aiResult ? (
                    <>
@@ -211,11 +210,10 @@ export default function Journaling() {
               </div>
             </div>
 
-            {/* Bagian AI Generate */}
             <div className="bg-[#D8A7CA] p-10 rounded-[40px] shadow-lg text-white md:col-span-2 flex flex-col items-center justify-center min-h-[250px]">
               {!showAiResult ? (
                 <div className="text-center">
-                  <h3 className="font-bold text-2xl mb-6 italic tracking-wide">Ingin melihat saran AI?</h3>
+                  <h3 className="font-bold text-2xl mb-6 tracking-wide">Want some AI insights?</h3>
                   <button 
                     onClick={() => setShowAiResult(true)}
                     disabled={!aiResult} 
@@ -238,7 +236,7 @@ export default function Journaling() {
           </div>
 
           <div className="mb-20" ref={myJourneyRef}>
-            <h2 className="text-4xl font-bold text-gray-900 mb-8 italic">My Journey</h2>
+            <h2 className="text-4xl font-bold text-gray-900 mb-8">My Journey</h2>
             
             {journalsHistory.length === 0 ? (
               <p className="text-gray-500 text-xl italic">No journal entries have been written yet. Let’s start writing today!</p>

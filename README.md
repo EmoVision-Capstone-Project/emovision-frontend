@@ -1,16 +1,46 @@
-# React + Vite
+# EmoVision - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+EmoVision adalah aplikasi web pelacak kesehatan mental berbasis kecerdasan buatan (AI) yang dirancang untuk membantu pengguna memahami, memvisualisasikan, dan mengelola kondisi emosional mereka secara real-time. Aplikasi ini mengintegrasikan deteksi emosi wajah, jurnal harian analitis, dan berbagai fitur interaktif pendukung kesehatan mental.
 
-Currently, two official plugins are available:
+## Fitur Utama
+- **Face Mood Detection**: Deteksi suasana hati secara real-time menggunakan kamera berbasis AI.
+- **Journaling & AI Generate**: Ruang curahan hati harian terintegrasi dengan feedback analitis otomatis dari AI.
+- **Affirmation & Positive Quotes**: Pengingat pesan positif harian untuk memotivasi pengguna.
+- **Mindful Breathing**: Latihan pernapasan terpandu (teknik 4-7-8) untuk meredakan kecemasan.
+- **Mood Graphic**: Visualisasi grafik mingguan untuk melihat perkembangan emosi secara kronologis.
+- **Streak Tracker**: Membangun kebiasaan positif melalui pelacakan konsistensi journaling harian.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+##  Tech Stack
+- **Framework/Library**: React.js (Vite)
+- **Styling**: Tailwind CSS
+- **Routing**: React Router DOM
+- **HTTP Client**: Axios
+- **Icons**: React Icons (Fi Icons)
 
-## React Compiler
+## Prasyarat & Instalasi
+Sebelum menjalankan aplikasi, pastikan Anda telah menginstal [Node.js](https://nodejs.org/) di perangkat Anda.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+1. **Clone Repository**
+   ```bash
+   git clone [https://github.com/username/emovision-frontend.git](https://github.com/username/emovision-frontend.git)
+   cd emovision-frontend
+   ```
+2. **Instalasi Dependencies**
+    ```bash
+   npm install
+   ```
+3. **Konfigurasi Environment Variables**
 
-## Expanding the ESLint configuration
+    Buat file .env di root folder dan masukkan URL backend (Railway):
+    ```bash
+   VITE_API_URL=[https://emovision-backend-production.up.railway.app/api](https://emovision-backend-production.up.railway.app/api)
+   ```
+## Menjalankan Aplikasi Secara Lokal
+Untuk menjalankan server pengembangan lokal:
+```bash
+npm run dev
+```
+Aplikasi secara default akan berjalan di alamat http://localhost:5173.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Deployment (Vercel)
+Proyek ini dikonfigurasi untuk di-deploy ke Vercel secara otomatis melalui integrasi GitHub. Pastikan Anda telah menambahkan VITE_API_URL pada menu Environment Variables di dashboard project Vercel Anda sebelum melakukan deployment.
