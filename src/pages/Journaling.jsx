@@ -88,7 +88,7 @@ export default function Journaling() {
     setStatusMessage({ text: "Analyzing your mood...", type: "" }); 
 
     try {
-      const aiResponse = await axios.post("https://tasyacac05-emovision.hf.space/api/text/predict", {
+      const aiResponse = await axios.post("https://tasyacac05-emovision.hf.space/predict", {
         text: currentJournal,
         with_insight: true 
       });
