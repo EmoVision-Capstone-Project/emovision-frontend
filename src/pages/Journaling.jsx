@@ -93,8 +93,20 @@ export default function Journaling() {
         with_insight: true 
       });
 
-      const aiData = aiResponse.data;
-            setAiResult(aiData); 
+      let aiData = aiResponse.data;
+
+      const isAiError = aiData.insight && (aiData.insight.includes("[Gemini error") || aiData.insight.includes("503"));
+      
+      if (isAiError) {
+        aiData = {
+          ...aiData,
+          insight: "Oops, your AI companion needs a quick breather due to high traffic. Please try saving your journal again in a bit!",
+          predicted_label: aiData.predicted_label || "neutral",
+          confidence: aiData.confidence || 0
+        };
+      }
+
+      setAiResult(aiData); 
 
       const journalData = {
         user_id: userData.user_id,
@@ -126,7 +138,14 @@ export default function Journaling() {
       
     } catch (error) {
       console.error("Failed to process journal:", error);
+      
       setStatusMessage({ text: "Failed to connect to the server or AI.", type: "error" });
+      
+      setAiResult({
+        insight: "AI system network error. Please try again later!",
+        predicted_label: "neutral",
+        confidence: 0
+      });
     } finally {
       setIsLoading(false);
       setTimeout(() => setStatusMessage({ text: "", type: "" }), 3000);
@@ -189,7 +208,7 @@ export default function Journaling() {
             <div className="bg-[#D8A7CA] p-8 rounded-[40px] shadow-lg flex flex-col items-center justify-center text-white">
               <div className="w-24 h-24 mb-6">
                 <img 
-                  src={aiResult ? moodImages[aiResult.predicted_label] : neutralImg} 
+                  src={aiResult && moodImages[aiResult.predicted_label] ? moodImages[aiResult.predicted_label] : neutralImg} 
                   alt="Mood Icon" 
                   className="w-full h-full object-contain drop-shadow-md transition-all duration-500" 
                 />
